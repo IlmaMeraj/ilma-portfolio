@@ -264,8 +264,7 @@ const SkillCategory = ({ title, skills, icon: Icon }: { title: string, skills: s
 export default function App() {
   // 1. Go to https://formspree.io/ to get your ID (e.g., "mqkvpogj")
   // 2. Replace "YOUR_ID_HERE" with that ID.
-  const FORMSPREE_ID = "mgolgqqy"; 
-
+const FORMSPREE_ID: string = "mgolgqqy";
   const [loading, setLoading] = useState(true);
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -530,32 +529,34 @@ export default function App() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-             onSubmit={async (e) => {
+            onSubmit={async (e) => {
   e.preventDefault();
   setFormStatus('sending');
+
   const form = e.currentTarget;
   const data = new FormData(form);
-  
+
   try {
-    // I REMOVED THE "YOUR_ID_HERE" CHECK FROM HERE
-    const response = await fetch(`https://formspree.io/f/${mgolgqqy}`, {
-      method: 'POST',
+    const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: "POST",
       body: data,
-      headers: { 'Accept': 'application/json' }
+      headers: {
+        Accept: "application/json"
+      }
     });
-    
+
     const result = await response.json();
-    
+
     if (response.ok) {
-      setFormStatus('success');
+      setFormStatus("success");
       form.reset();
     } else {
-      setErrorMessage(result.error || "Submission failed. Make sure your Form ID is correct.");
-      setFormStatus('error');
+      setErrorMessage(result.error || "Submission failed.");
+      setFormStatus("error");
     }
   } catch (error) {
     setErrorMessage("Network error. Please check your connection.");
-    setFormStatus('error');
+    setFormStatus("error");
   }
 }}
               className="space-y-4"
