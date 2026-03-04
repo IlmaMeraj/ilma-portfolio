@@ -262,7 +262,13 @@ const SkillCategory = ({ title, skills, icon: Icon }: { title: string, skills: s
 );
 
 export default function App() {
+  // 1. Go to https://formspree.io/ to get your ID (e.g., "mqkvpogj")
+  // 2. Replace "YOUR_ID_HERE" with that ID.
+  const FORMSPREE_ID = "mgolgqqy"; 
+
   const [loading, setLoading] = useState(true);
+  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -524,8 +530,39 @@ export default function App() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              action={`https://formspree.io/f/${resumeData.basics.email}`} // Placeholder - user should replace with their Formspree ID
-              method="POST"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setFormStatus('sending');
+                const form = e.currentTarget;
+                const data = new FormData(form);
+                
+                try {
+                  if (FORMSPREE_ID === "YOUR_ID_HERE") {
+                    setErrorMessage("Please add your Formspree ID to the code (App.tsx line 267).");
+                    setFormStatus('error');
+                    return;
+                  }
+
+                  const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                  });
+                  
+                  const result = await response.json();
+                  
+                  if (response.ok) {
+                    setFormStatus('success');
+                    form.reset();
+                  } else {
+                    setErrorMessage(result.error || "Submission failed. Make sure your Form ID is correct.");
+                    setFormStatus('error');
+                  }
+                } catch (error) {
+                  setErrorMessage("Network error. Please check your connection.");
+                  setFormStatus('error');
+                }
+              }}
               className="space-y-4"
             >
               <div className="grid gap-4 sm:grid-cols-2">
@@ -560,10 +597,20 @@ export default function App() {
               />
               <button 
                 type="submit"
-                className="w-full rounded-xl bg-white py-4 text-lg font-bold text-black transition-transform hover:scale-[1.02] active:scale-95"
+                disabled={formStatus === 'sending'}
+                className="w-full rounded-xl bg-white py-4 text-lg font-bold text-black transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50"
               >
-                Send Message
+                {formStatus === 'sending' ? 'Sending...' : 'Send Message'}
               </button>
+              
+              {formStatus === 'success' && (
+                <p className="text-center text-emerald-500 font-medium">Message sent successfully! I'll get back to you soon.</p>
+              )}
+              {formStatus === 'error' && (
+                <p className="text-center text-red-500 font-medium">
+                  {errorMessage || "Oops! Something went wrong. Please try again."}
+                </p>
+              )}
             </motion.form>
           </div>
         </section>
