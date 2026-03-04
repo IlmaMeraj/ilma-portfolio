@@ -530,39 +530,34 @@ export default function App() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              onSubmit={async (e) => {
-                e.preventDefault();
-                setFormStatus('sending');
-                const form = e.currentTarget;
-                const data = new FormData(form);
-                
-                try {
-                  if (FORMSPREE_ID === "YOUR_ID_HERE") {
-                    setErrorMessage("Please add your Formspree ID to the code (App.tsx line 267).");
-                    setFormStatus('error');
-                    return;
-                  }
-
-                  const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-                    method: 'POST',
-                    body: data,
-                    headers: { 'Accept': 'application/json' }
-                  });
-                  
-                  const result = await response.json();
-                  
-                  if (response.ok) {
-                    setFormStatus('success');
-                    form.reset();
-                  } else {
-                    setErrorMessage(result.error || "Submission failed. Make sure your Form ID is correct.");
-                    setFormStatus('error');
-                  }
-                } catch (error) {
-                  setErrorMessage("Network error. Please check your connection.");
-                  setFormStatus('error');
-                }
-              }}
+             onSubmit={async (e) => {
+  e.preventDefault();
+  setFormStatus('sending');
+  const form = e.currentTarget;
+  const data = new FormData(form);
+  
+  try {
+    // I REMOVED THE "YOUR_ID_HERE" CHECK FROM HERE
+    const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      setFormStatus('success');
+      form.reset();
+    } else {
+      setErrorMessage(result.error || "Submission failed. Make sure your Form ID is correct.");
+      setFormStatus('error');
+    }
+  } catch (error) {
+    setErrorMessage("Network error. Please check your connection.");
+    setFormStatus('error');
+  }
+}}
               className="space-y-4"
             >
               <div className="grid gap-4 sm:grid-cols-2">
