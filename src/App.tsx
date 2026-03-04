@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring } from 'motion/react';
 import { 
   Github, 
   Linkedin, 
   Mail, 
-  Phone, 
-  MapPin, 
-  ExternalLink, 
   Code, 
-  Cpu, 
   Database, 
   Trophy, 
   Users, 
@@ -16,8 +12,7 @@ import {
   ChevronRight,
   Download,
   Terminal,
-  Layers,
-  Zap
+  Layers
 } from 'lucide-react';
 import { AnimatedBackground } from './components/AnimatedBackground';
 
