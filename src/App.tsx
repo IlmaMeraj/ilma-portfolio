@@ -538,7 +538,7 @@ export default function App() {
   
   try {
     // I REMOVED THE "YOUR_ID_HERE" CHECK FROM HERE
-    const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+    const response = await fetch(`https://formspree.io/f/${mgolgqqy}`, {
       method: 'POST',
       body: data,
       headers: { 'Accept': 'application/json' }
