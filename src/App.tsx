@@ -4,6 +4,8 @@ import {
   Github, 
   Linkedin, 
   Mail, 
+  Phone,
+  MapPin,
   Code, 
   Database, 
   Trophy, 
@@ -287,12 +289,12 @@ export default function App() {
             <a href="#achievements" className="transition-colors hover:text-white">Achievements</a>
             <a href="#education" className="transition-colors hover:text-white">Education</a>
           </div>
-          <a 
-            href={`mailto:${resumeData.basics.email}`}
+          <button 
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             className="rounded-full bg-white px-5 py-2 text-sm font-bold text-black transition-transform hover:scale-105 active:scale-95"
           >
             Contact
-          </a>
+          </button>
         </div>
       </nav>
 
@@ -324,10 +326,14 @@ export default function App() {
                 View Experience
                 <ChevronRight className="transition-transform group-hover:translate-x-1" />
               </button>
-              <button className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-lg font-bold text-white backdrop-blur-sm transition-all hover:bg-white/10">
+              <a 
+                href="/resume.pdf" 
+                download="Ilma_Meraj_Resume.pdf"
+                className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-lg font-bold text-white backdrop-blur-sm transition-all hover:bg-white/10"
+              >
                 <Download size={20} />
                 Resume
-              </button>
+              </a>
             </div>
 
             <div className="mt-16 flex gap-6">
@@ -474,6 +480,91 @@ export default function App() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="py-20">
+          <SectionHeading subtitle="Have a project in mind? Let's talk.">
+            Get In Touch
+          </SectionHeading>
+          <div className="grid gap-12 lg:grid-cols-2">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <p className="text-lg text-white/60">
+                I'm currently looking for new opportunities. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 text-white/70">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                    <Mail size={20} />
+                  </div>
+                  <span>{resumeData.basics.email}</span>
+                </div>
+                <div className="flex items-center gap-4 text-white/70">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                    <Phone size={20} />
+                  </div>
+                  <span>{resumeData.basics.phone}</span>
+                </div>
+                <div className="flex items-center gap-4 text-white/70">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+                    <MapPin size={20} />
+                  </div>
+                  <span>{resumeData.basics.location}</span>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.form 
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              action={`https://formspree.io/f/${resumeData.basics.email}`} // Placeholder - user should replace with their Formspree ID
+              method="POST"
+              className="space-y-4"
+            >
+              <div className="grid gap-4 sm:grid-cols-2">
+                <input 
+                  type="text" 
+                  name="name" 
+                  placeholder="Your Name" 
+                  required
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-white/30"
+                />
+                <input 
+                  type="email" 
+                  name="email" 
+                  placeholder="Your Email" 
+                  required
+                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-white/30"
+                />
+              </div>
+              <input 
+                type="text" 
+                name="subject" 
+                placeholder="Subject" 
+                required
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-white/30"
+              />
+              <textarea 
+                name="message" 
+                placeholder="Your Message" 
+                rows={5} 
+                required
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-white/30"
+              />
+              <button 
+                type="submit"
+                className="w-full rounded-xl bg-white py-4 text-lg font-bold text-black transition-transform hover:scale-[1.02] active:scale-95"
+              >
+                Send Message
+              </button>
+            </motion.form>
           </div>
         </section>
 
